@@ -11,9 +11,14 @@ $('.sort-players li').click(function(){
 	if($(this).parent().hasClass('sort-positions')) selectedPosition = $(this).text()
 		else selectedGame = $(this).text()
 
-	// Sort & Print
-	let players = sortPlayers(selectedPosition, selectedGame)
-	printSortedPlayers(players)
+	// Selected players requires different type of printing
+	if(selectedPosition == 'SEL'){
+		printSelectedPlayers(selectedGame)
+	} else{ // Sort & Print
+		let players = sortPlayers(selectedPosition, selectedGame)
+		printSortedPlayers(players)
+	}
+	
 
 })
 
@@ -28,7 +33,6 @@ $(".players").delegate(".player", "click", function(){
 	let clickedPlayerId = parseInt($(this).attr('id'))
 	clickedPlayer = findPlayerById(clickedPlayerId)
 	clickedPlayerLineups = checkPlayerLineups(clickedPlayerId)
-	console.log(clickedPlayerLineups)
 
 	// Build Player Select Bar and place it after clicked row
 	let selectBar = buildPlayerSelectBar(clickedPlayer, clickedPlayerLineups.length)
@@ -36,8 +40,6 @@ $(".players").delegate(".player", "click", function(){
 
 	// Create Slider into Player Select Bar
 	if(clickedLineupRows.length < 1) createSlider(clickedPlayerLineups.length)
-
-	
 
 })
 

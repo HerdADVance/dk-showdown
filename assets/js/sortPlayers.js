@@ -14,6 +14,29 @@ function printSortedPlayers(arr){
 	$('.players').html(output)
 }
 
+function printSelectedPlayers(game){
+	
+	let output = ''
+
+	for(var i=0; i<selectedPlayers.length; i++){
+
+		let player = selectedPlayers[i]
+		let foundPlayer = findPlayerById(player.ID)
+
+		console.log(foundPlayer)
+
+		output += '<tr class="player" id="' + player.ID + '">'
+			output += '<td class="position">' + foundPlayer.Position + '</td>'
+			output += '<td class="name">' + foundPlayer.Name + '</td>'
+			output += '<td class="team">' + foundPlayer.TeamAbbrev + '</td>'
+			output += '<td class="pct-lineups">' + player.lineupsIn.length + '/' + numberOfLineups + '</td>'
+			output += '<td class="pct-lineups">' + (player.lineupsIn.length/numberOfLineups*100).toFixed(1) + '%' + '</td>'
+		output += '</tr>'
+	}
+
+	$('.players').html(output)
+}
+
 function sortPlayers(pos, game){
 	let players = allPlayers
 	players = sortPlayersByPosition(players, pos)
@@ -53,10 +76,6 @@ function sortPlayersByPosition(players, pos){
 		
 		case 'FLEX':
 			matching = players.filter(e => ['RB', 'WR', 'TE'].includes(e.Position))
-			break
-
-		case 'SEL':
-			matching = selectedPlayers
 			break
 		
 		default:
