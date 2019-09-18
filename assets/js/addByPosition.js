@@ -5,6 +5,11 @@ function searchLineups(pos, num, captain){
 
 }
 
+function searchLineupsToRemove(pos, num, captain){
+	if(captain == 'yes') removeCaptain(pos, num)
+	else removeRegular(pos, num)
+}
+
 
 function addCaptain(pos, numLineups){
 	
@@ -30,6 +35,18 @@ function addCaptain(pos, numLineups){
 
 	// Update the view to reflect player being added to lineups
 	addLineupsToPlayer(clickedPlayer.ID, addedTo)
+
+}
+
+function removeCaptain(pos, numLineups){
+
+	var removeFrom = []
+
+	for(var i=0; i < lineups.length; i++){
+
+	}
+
+	removeLineupsFromPlayer(clickedPlayer.ID, removeFrom)
 
 }
 
