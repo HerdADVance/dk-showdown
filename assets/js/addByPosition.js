@@ -1,12 +1,12 @@
 function searchLineups(pos, num, captain){
 
-	if(captain == 'yes') addCaptain(pos, num)
+	if(captain === 'yes') addCaptain(pos, num)
 	else addRegular(pos, num)
 
 }
 
 function searchLineupsToRemove(pos, num, captain){
-	if(captain == 'yes') removeCaptain(pos, num)
+	if(captain === 'yes') removeCaptain(pos, num)
 	else removeRegular(pos, num)
 }
 
@@ -42,17 +42,30 @@ function removeCaptain(pos, numLineups){
 
 	var removeFrom = []
 
+	// Looping through global lineups
 	for(var i=0; i < lineups.length; i++){
+
+		// Checking to see if player is captain in this lineup
+		let isCaptain = checkLineupForCaptain(lineups[i])
+		
+		// Player is the captain so remove them and add to counter
+		if(isCaptain){
+			lineups[i].roster['CAP'][0] = {}
+			removeFrom.push(lineups[i].id)
+		}
+
+		// Stop because we've reached the number to remove
+		if(removeFrom.length == Math.abs(numLineups)) break
 
 	}
 
-	removeLineupsFromPlayer(clickedPlayer.ID, removeFrom)
+	//removeLineupsFromPlayer(clickedPlayer.ID, removeFrom)
 
 }
 
 function addRegular(pos, numLineups){
 
-	var addedTo = [] // Lineup Id's that fit our criteria. We'll use this to update the global lineups at the end of this function
+	var addedTo = [] // Lineup Id's that fit our criteria. We'll use this at the end of this function
 
 	// Looping through global lineups
 	for(var i=0; i < lineups.length; i++){
@@ -82,6 +95,35 @@ function addRegular(pos, numLineups){
 	// Update the player's lineups in selected players
 	addLineupsToPlayer(clickedPlayer.ID, addedTo)
 
+}
+
+
+function removeRegular(pos, numLineups){
+
+	var removeFrom = [] // Lineup Id's that fit our criteria. We'll use this at the end of this function
+
+	// Looping through global lineups
+	for(var i=0; i < lineups.length; i++){
+		
+		// Check each regular spot in lineup for player
+		for(var j = 0; j < 5; j++){
+			
+			// Found player so remove them and add to local array
+			if(lineups[i].roster['REG'][j].ID === clickedPlayer.ID){
+				lineups[i].roster['REG'][j] = {}
+				removeFrom.push(lineups[i].id)
+				break
+			}
+		}
+
+		// Stop because we've reached the number to remove
+		if(removeFrom.length == Math.abs(numLineups)) break
+
+	}
+
+	console.log(removeFrom)
+
+	//removeLineupsFromPlayer(clickedPlayer.ID, removeFrom)
 }
 
 
@@ -145,6 +187,11 @@ function checkPlayerLineups(pid){
 	let player = _.find(selectedPlayers, {'ID': pid })
 	if(player) return player.lineupsIn
 		else return []
+}
+
+function checkLineupForCaptain(lineup){
+	if(lineup.roster['CAP'][0].ID == clickedPlayer.ID) return true
+	else return false
 }
 
 function checkLineupForRegularPlayer(lineup){

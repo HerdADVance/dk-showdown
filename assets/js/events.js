@@ -55,7 +55,7 @@ $(".players").delegate(".player-select-add", "click", function(){
 	if(random == 'yes') lineups = _.shuffle(lineups);
 
 	// The main functions reponsible for adding or removing players
-	if(numberToChange > 0) searchLineupsToRemove(clickedPlayer.Position, numberToChange, captain)
+	if(numberToChange < 0) searchLineupsToRemove(clickedPlayer.Position, numberToChange, captain)
 	else searchLineups(clickedPlayer.Position, numberToChange, captain)
 
 	// Reorder the lineups by their original ID's before printing
